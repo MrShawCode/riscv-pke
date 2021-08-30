@@ -68,6 +68,9 @@ typedef struct process {
   struct process *parent;
   // next queue element
   struct process *queue_next;
+
+  // accounting
+  int tick_count;
 }process;
 
 // switch to run user app
