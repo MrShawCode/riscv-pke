@@ -33,5 +33,7 @@ void switch_to(process*);
 
 // current running process
 extern process* current;
+// virtual address of our simple heap
+extern uint64 g_ufree_page;
 
 #endif
