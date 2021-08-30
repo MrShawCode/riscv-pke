@@ -71,7 +71,7 @@ USER_OBJS  		:= $(addprefix $(OBJ_DIR)/, $(patsubst %.c,%.o,$(USER_CPPS)))
 
 
 
-USER_TARGET 	:= $(OBJ_DIR)/app_long_loop
+USER_TARGET 	:= $(OBJ_DIR)/app_errorline
 #------------------------targets------------------------
 $(OBJ_DIR):
 	@-mkdir -p $(OBJ_DIR)	
