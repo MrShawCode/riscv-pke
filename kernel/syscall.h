@@ -10,6 +10,7 @@
 #define SYS_user_exit (SYS_user_base + 1)
 #define SYS_user_allocate_page (SYS_user_base + 2)
 #define SYS_user_free_page (SYS_user_base + 3)
+#define SYS_user_fork (SYS_user_base + 4)
 
 long do_syscall(long a0, long a1, long a2, long a3, long a4, long a5, long a6, long a7);
 

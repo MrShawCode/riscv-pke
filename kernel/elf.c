@@ -77,6 +77,24 @@ elf_status elf_load(elf_ctx *ctx) {
     // actual loading
     if (elf_fpread(ctx, dest, ph_addr.memsz, ph_addr.off) != ph_addr.memsz)
       return EL_EIO;
+
+    // record the vm region in proc->mapped_info
+    int j;
+    for( j=0; j<PGSIZE/sizeof(mapped_region); j++ )
+      if( (process*)(((elf_info*)(ctx->info))->p)->mapped_info[j].va == 0x0 ) break;
+
+    ((process*)(((elf_info*)(ctx->info))->p))->mapped_info[j].va = ph_addr.vaddr;
+    ((process*)(((elf_info*)(ctx->info))->p))->mapped_info[j].npages = 1;
+    if( ph_addr.flags == (SEGMENT_READABLE|SEGMENT_EXECUTABLE) ){
+      ((process*)(((elf_info*)(ctx->info))->p))->mapped_info[j].seg_type = CODE_SEGMENT;
+      sprint( "CODE_SEGMENT added at mapped info offset:%d\n", j );
+    }else if ( ph_addr.flags == (SEGMENT_READABLE|SEGMENT_WRITABLE) ){
+      ((process*)(((elf_info*)(ctx->info))->p))->mapped_info[j].seg_type = DATA_SEGMENT;
+      sprint( "DATA_SEGMENT added at mapped info offset:%d\n", j );
+    }else
+      panic( "unknown program segment encountered, segment flag:%d.\n", ph_addr.flags );
+
+    ((process*)(((elf_info*)(ctx->info))->p))->total_mapped_region ++;
   }
 
   return EL_OK;
